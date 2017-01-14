@@ -1,15 +1,14 @@
-//linked_list.c
+//double_linked_list.c
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "double_linked_list.h"
 
 struct Node {
     int data;
     struct Node* next;
     struct Node* prev;
 };
-
-struct Node* head = NULL;
 
 struct Node* createNode(int data) {
     struct Node* node = (struct Node*)malloc(sizeof(struct Node));
@@ -19,11 +18,11 @@ struct Node* createNode(int data) {
     return node;
 }
 
-void initHeadNoad(int data) {
-    head = createNode(data);
+struct Node* initHeadNode(int data) {
+    return createNode(data);
 }
 
-void insertToHead(int data) {
+void addFirst(struct Node* head, int data) {
     struct Node* node = createNode(data);
     if (head == NULL) {
         head = node;
@@ -34,7 +33,7 @@ void insertToHead(int data) {
     head = node;
 }
 
-void insertToTail(int data) {
+void addLast(struct Node* head, int data) {
     struct Node* node = createNode(data);
     if (head == NULL) {
         head = node;
@@ -46,7 +45,7 @@ void insertToTail(int data) {
     node->prev = current;
 }
 
-void printList() {
+void printList(struct Node* head) {
     printf("\n[ ");
     struct Node* node = head;
     while (node != NULL) {
@@ -56,9 +55,8 @@ void printList() {
     printf("]\n");
 }
 
-void removeList() {
+void clear(struct Node* head) {
     if (head == NULL) {
-        printf("There are no head node defined!\n");
         return;
     }
     struct Node* current = head;
@@ -68,12 +66,10 @@ void removeList() {
         current = tmp;
     }
     head = NULL;
-    printf("List was removed!\n");
 }
 
-void removeNode(struct Node* node) {
+void clearNode(struct Node* head, struct Node* node) {
     if (head == node) {
-        printf("Head node\n");
         struct Node* tmp = head;
         head = head->next;
         free(head);
@@ -82,45 +78,42 @@ void removeNode(struct Node* node) {
         if (node->next != NULL) node->next->prev = node->prev;
         free(node);
     }
-    printf("Node was removed!\n");
 }
 
 
-int main()
-{
-    removeList();
-    head = createNode(0);
-    printList();
+// Tests for linked list API.
+/* int main() */
+/* { */
+/*     struct Node* h0 = NULL; */
+/*     clear(h0); */
+/*     struct Node* h1 = initHeadNode(0); */
+/*     printList(h1); */
+/*     clear(h1); */
 
-    head = createNode(5);
-    printList();
-    removeNode(head);
+/*     struct Node* h2 = initHeadNode(5); */
+/*     printList(h2); */
+/*     clearNode(h2, h2); */
 
-    head = createNode(5);
-    printList();
-    insertToTail(6);
-    printList();
-    struct Node* n = head->next;
-    removeNode(n);
-    printList();
+/*     struct Node* h3 = initHeadNode(5); */
+/*     printList(h3); */
+/*     addLast(h3, 6); */
+/*     printList(h3); */
+/*     struct Node* n = h3->next; */
+/*     clearNode(h3, n); */
+/*     printList(h3); */
+/*     clear(h3); */
 
-    for (int i=1; i<10; ++i) {
-        if (i % 2 == 0) {
-            insertToHead(i);
-        } else {
-            insertToTail(i);
-        }
-    }
-    printList();
-    removeList();
-    
-    insertToHead(100);
-    printList();
-    removeList();
+/*     struct Node* h4 = initHeadNode(0); */
 
-    insertToTail(101);
-    printList();
-    removeList();
+/*     for (int i=1; i<10; ++i) { */
+/*         if (i % 2 == 0) { */
+/*             addFirst(h4, i); */
+/*         } else { */
+/*             addLast(h4, i); */
+/*         } */
+/*     } */
+/*     printList(h4); */
+/*     clear(h4); */
 
-    return 0;
-}
+/*     return 0; */
+/* } */
